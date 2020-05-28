@@ -1,10 +1,19 @@
 const path = require(`path`);
 
 module.exports = {
-  entry: `./src/index.js`,
+  mode: 'development',
+  entry: {
+    app: './src/index.js',
+  },
   output: {
-    filename: `bundle.js`,
-    path: path.join(__dirname, `public`)
+    filename: `[name].js`,
+    path: path.join(__dirname, `public`),
+  },
+  resolve: {
+    alias: {
+      generated: path.resolve(__dirname, 'vendor-lib/zb-aliases/'),
+      zb: path.resolve(__dirname, 'node_modules/zombiebox/zb'),
+    }
   },
   devServer: {
     contentBase: path.join(__dirname, `public`),

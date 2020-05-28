@@ -1,16 +1,20 @@
 import React from "react";
-import PropTypes from "prop-types";
+import pt from "prop-types";
 
 
-const App = () => {
+const App = (props) => {
+  const {device} = props;
+
   return (
     <div>
-      Hello world!
+      Hello {device.info.type()}!
     </div>
   );
 };
 
-App.propTypes = {};
+App.propTypes = {
+  device: pt.object.isRequired,
+};
 
 
 export default App;

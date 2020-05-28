@@ -6,7 +6,11 @@
   "dependencies": {
     "prop-types": "15.7.2",
     "react": "16.13.1",
-    "react-dom": "16.13.1"
+    "react-dom": "16.13.1",
+    "zombiebox": "2.7.2",
+    "zombiebox-platform-pc": "2.3.3",
+    "zombiebox-platform-tizen": "2.2.3",
+    "zombiebox-platform-webos": "2.2.5"
   },
   "devDependencies": {
     "@babel/core": "7.10.1",
