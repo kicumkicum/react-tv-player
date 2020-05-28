@@ -1,3 +1,4 @@
+import "./patch.js";
 import DeviceTizen from "zombiebox-platform-tizen/lib/device.js";
 import DeviceWebos from "zombiebox-platform-webos/lib/device.js";
 
