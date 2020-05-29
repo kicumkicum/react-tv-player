@@ -7,6 +7,14 @@ import Log from "../log/log.jsx";
 import OSD from "../osd/osd.jsx";
 
 
+const DEFAULT_VIDEO_SIZE = {
+  TOP: 100,
+  LEFT: 0,
+  WIDTH: 800,
+  HEIGHT: 600,
+};
+
+
 const Video = class extends PureComponent {
   constructor(props) {
     super(props);
@@ -17,6 +25,13 @@ const Video = class extends PureComponent {
       action: video.getState(),
       position: Math.floor(video.getPosition()),
     };
+
+    video.getViewport().setArea(Rect.createByNumbers(
+      DEFAULT_VIDEO_SIZE.LEFT,
+      DEFAULT_VIDEO_SIZE.TOP,
+      DEFAULT_VIDEO_SIZE.WIDTH,
+      DEFAULT_VIDEO_SIZE.HEIGHT
+    ));
 
     this._platformEventToAction = this._platformEventToAction.bind(this);
   }
