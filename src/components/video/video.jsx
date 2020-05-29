@@ -4,6 +4,7 @@ import Key from "zb/device/input/key";
 import Rect from "zb/geometry/rect";
 import Help from "../help/help.jsx";
 import Log from "../log/log.jsx";
+import OSD from "../osd/osd.jsx";
 
 
 const Video = class extends PureComponent {
@@ -14,6 +15,7 @@ const Video = class extends PureComponent {
 
     this.state = {
       action: video.getState(),
+      position: Math.floor(video.getPosition()),
     };
 
     this._platformEventToAction = this._platformEventToAction.bind(this);
@@ -21,8 +23,6 @@ const Video = class extends PureComponent {
 
   componentDidMount() {
     const {video, src, keyHandler} = this.props;
-
-    video.getViewport().setArea(Rect.createByNumbers(0, 100, 800, 600));
 
     keyHandler.processKey = (zbKey) => {
       switch (zbKey) {
@@ -47,6 +47,10 @@ const Video = class extends PureComponent {
         case Key.DIGIT_6:
           video.getViewport()
             .setFullScreen(!video.getViewport().isFullScreen());
+
+          // Workaround. Not for production. For prototype only.
+          // TODO: Need better method for spy on video size changing.
+          this.forceUpdate();
           break;
         case Key.DIGIT_7:
           video.setPlaybackRate(3 - video.getPlaybackRate());
@@ -63,15 +67,30 @@ const Video = class extends PureComponent {
     ];
 
     events.forEach((it) => video.on(it, this._platformEventToAction));
+    video.on(video.EVENT_TIME_UPDATE, (eventName, time) => this.setState({
+      position: Math.floor(time / 1000),
+    }));
   }
 
   render() {
-    const {action} = this.state;
+    const {video} = this.props;
+    const {action, position} = this.state;
+    const area = video.getViewport().getCurrentArea().getValue();
 
     return (
       <>
         <Log
           action={action}
+        />
+        <OSD
+          top={area.y0}
+          left={area.x0}
+          x={area.x1}
+          y={area.y1}
+          speed={video.getPlaybackRate()}
+          volume={video.getVolume()}
+          progress={position}
+          isShow={true}
         />
         <Help />
       </>
