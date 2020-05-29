@@ -33,46 +33,12 @@ const Video = class extends PureComponent {
       DEFAULT_VIDEO_SIZE.HEIGHT
     ));
 
+    this._keyHandler = this._keyHandler.bind(this);
     this._platformEventToAction = this._platformEventToAction.bind(this);
   }
 
   componentDidMount() {
-    const {video, src, keyHandler} = this.props;
-
-    keyHandler.processKey = (zbKey) => {
-      switch (zbKey) {
-        case Key.ENTER:
-          video.togglePause();
-          break;
-        case Key.DIGIT_1:
-          video.play(src);
-          break;
-        case Key.DIGIT_2:
-          video.setVolume(video.getVolume() + 10);
-          break;
-        case Key.DIGIT_3:
-          video.setVolume(video.getVolume() - 10);
-          break;
-        case Key.DIGIT_4:
-          video.setPosition(video.getPosition() + 1000 * 10);
-          break;
-        case Key.DIGIT_5:
-          video.setPosition(video.getPosition() - 1000 * 10);
-          break;
-        case Key.DIGIT_6:
-          video.getViewport()
-            .setFullScreen(!video.getViewport().isFullScreen());
-
-          // Workaround. Not for production. For prototype only.
-          // TODO: Need better method for spy on video size changing.
-          this.forceUpdate();
-          break;
-        case Key.DIGIT_7:
-          video.setPlaybackRate(3 - video.getPlaybackRate());
-          break;
-      }
-    };
-
+    const {video, keyHandler} = this.props;
     const events = [
       video.EVENT_PAUSE,
       video.EVENT_PLAY,
@@ -82,9 +48,12 @@ const Video = class extends PureComponent {
     ];
 
     events.forEach((it) => video.on(it, this._platformEventToAction));
+
     video.on(video.EVENT_TIME_UPDATE, (eventName, time) => this.setState({
       position: Math.floor(time / 1000),
     }));
+
+    keyHandler.processKey = this._keyHandler;
   }
 
   render() {
@@ -116,6 +85,42 @@ const Video = class extends PureComponent {
     this.setState({
       action: event,
     });
+  }
+
+  _keyHandler(zbKey) {
+    const {video, src} = this.props;
+
+    switch (zbKey) {
+      case Key.ENTER:
+        video.togglePause();
+        break;
+      case Key.DIGIT_1:
+        video.play(src);
+        break;
+      case Key.DIGIT_2:
+        video.setVolume(video.getVolume() + 10);
+        break;
+      case Key.DIGIT_3:
+        video.setVolume(video.getVolume() - 10);
+        break;
+      case Key.DIGIT_4:
+        video.setPosition(video.getPosition() + 1000 * 10);
+        break;
+      case Key.DIGIT_5:
+        video.setPosition(video.getPosition() - 1000 * 10);
+        break;
+      case Key.DIGIT_6:
+        video.getViewport()
+          .setFullScreen(!video.getViewport().isFullScreen());
+
+        // Workaround. Not for production. For prototype only.
+        // TODO: Need better method for spy on video size changing.
+        this.forceUpdate();
+        break;
+      case Key.DIGIT_7:
+        video.setPlaybackRate(3 - video.getPlaybackRate());
+        break;
+    }
   }
 };
 
