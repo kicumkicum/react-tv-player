@@ -15,7 +15,7 @@ const DEFAULT_VIDEO_SIZE = {
 };
 
 
-const Video = class extends PureComponent {
+class Video extends PureComponent {
   constructor(props) {
     super(props);
 

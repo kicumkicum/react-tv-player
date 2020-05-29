@@ -26,6 +26,8 @@ const App = (props) => {
 
 App.propTypes = {
   device: pt.object.isRequired,
+  keyHandler: pt.object.isRequired,
+  src: pt.string.isRequired,
 };
 
 
