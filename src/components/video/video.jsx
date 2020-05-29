@@ -75,7 +75,6 @@ const Video = class extends PureComponent {
           volume={video.getVolume()}
           progress={position}
           duration={Math.floor(video.getDuration() / 1000)}
-          isShow={true}
         />
         <Help />
       </>
