@@ -3,14 +3,16 @@ import pt from "prop-types";
 
 
 const OSD = (props) => {
-  const {top, left, x, y, speed, volume, progress, isShow} = props;
+  const {top, left, x, y, speed, volume, progress, duration, isShow} = props;
   const style = {
     position: `absolute`,
+    backgroundColor: `black`,
+    color: `white`,
     top,
     left,
     width: `${x - left}px`,
     height: `${y - top}px`,
-    backgroundColor: `green`,
+    opacity: 0.5,
   };
 
   if (!isShow) {
@@ -19,10 +21,21 @@ const OSD = (props) => {
 
   return (
     <div style={style}>
-      <div className="osd__speed" style={{
-      }}>{speed}</div>
+      <div className="osd__speed">{speed}x</div>
       <div className="volume__speed">{volume}</div>
-      <div className="progress__speed">{progress}</div>
+      <div className="progress__speed">
+        <div style={{
+          height: `10px`,
+          backgroundColor: `gray`,
+          width: `100%`,
+        }}>
+          <div style={{
+            width: `${progress / duration * 100}%`,
+            height: `10px`,
+            backgroundColor: `blue`,
+          }} />
+        </div>
+      </div>
     </div>
   );
 };
@@ -36,6 +49,7 @@ OSD.propTypes = {
   speed: pt.number.isRequired,
   volume: pt.number.isRequired,
   progress: pt.number.isRequired,
+  duration: pt.number.isRequired,
   isShow: pt.bool.isRequired,
 };
 
